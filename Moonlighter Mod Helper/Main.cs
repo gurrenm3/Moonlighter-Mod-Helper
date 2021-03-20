@@ -1,7 +1,13 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using Moonlighter_Mod_Helper.Api.Web;
 using System;
+using System.IO;
+using System.Net;
+using System.Net.Security;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 
 namespace Moonlighter_Mod_Helper
 {
@@ -16,6 +22,11 @@ namespace Moonlighter_Mod_Helper
         {
             new Harmony($"GurrenM4_{modName}").PatchAll(modAssembly);
             Logger.LogInfo($"{modName} has loaded");
+        }
+
+        void Update()
+        {
+            
         }
     }
 }
