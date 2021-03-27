@@ -37,20 +37,13 @@
       <HintPath>..\Dependencies\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-     <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>..\Dependencies\Assembly-CSharp_publicized.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp-firstpass_publicized">
       <HintPath>..\Dependencies\Assembly-CSharp-firstpass_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\Dependencies\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\Dependencies\Assembly-CSharp-firstpass.dll</HintPath>
+    <Reference Include="Assembly-CSharp_publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Assembly-CSharp_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
@@ -59,6 +52,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -71,19 +65,43 @@
       <HintPath>..\Dependencies\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\Dependencies\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>F:\Program Files (x86)\Steam\steamapps\common\Moonlighter\Moonlighter_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Dependencies\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Items\BagItem.cs" />
     <Compile Include="Api\BaseTranspilerPatch.cs" />
+    <Compile Include="Api\Guard.cs" />
+    <Compile Include="Api\Interfaces\IConsumable.cs" />
+    <Compile Include="Api\Interfaces\IEquippable.cs" />
+    <Compile Include="Api\Items\Potion.cs" />
+    <Compile Include="Api\JsonSerializer.cs" />
+    <Compile Include="Api\SpriteRegister.cs" />
     <Compile Include="Api\Web\ModUpdateChecker.cs" />
     <Compile Include="Api\Web\RestHelper.cs" />
     <Compile Include="Api\Web\WebReader.cs" />
     <Compile Include="Extensions\AntiCheatExtensions\ObscuredFloatExt.cs" />
     <Compile Include="Extensions\HeroMerchantExensions\HeroMerchantStatsExt.cs" />
+    <Compile Include="Extensions\HUDManagerExt.cs" />
+    <Compile Include="Extensions\ItemExtensions\ConsumableExt.cs" />
+    <Compile Include="Extensions\ItemExtensions\ItemMasterExt.cs" />
+    <Compile Include="Extensions\UnityExtensions\ComponentExt.cs" />
+    <Compile Include="Extensions\UnityExtensions\GameObjectExt.cs" />
+    <Compile Include="Extensions\UnityExtensions\ImageExt.cs" />
+    <Compile Include="Extensions\UnityExtensions\Texture2DExt.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Patches\ItemDatabase_GetSpriteByItemName.cs" />
+    <Compile Include="Patches\ItemDatabase_GetSprite.cs" />
     <Compile Include="Patches\MainMenuPanel_Awake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
