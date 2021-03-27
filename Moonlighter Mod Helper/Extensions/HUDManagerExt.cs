@@ -9,7 +9,7 @@ namespace Moonlighter_Mod_Helper.Extensions
             ItemStack equippedItemByType = HeroMerchant.Instance.heroMerchantInventory.GetEquippedItemByType(HeroMerchantInventory.EquipmentSlot.Potion);
             if (equippedItemByType)
             {
-                hudManager.currentPotionIcon.overrideSprite = ItemDatabase.GetSprite(equippedItemByType.master);
+                hudManager.currentPotionIcon.overrideSprite = consumableIcon;
                 hudManager.potionQuantityLabel.text = equippedItemByType.Quantity.ToString("0.");
             }
         }
