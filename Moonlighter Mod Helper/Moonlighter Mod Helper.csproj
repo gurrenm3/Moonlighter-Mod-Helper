@@ -50,6 +50,9 @@
       <HintPath>..\Dependencies\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DOTween">
+      <HintPath>..\Dependencies\DOTween.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -70,8 +73,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>F:\Program Files (x86)\Steam\steamapps\common\Moonlighter\Moonlighter_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\Dependencies\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Dependencies\UnityEngine.UI.dll</HintPath>
@@ -79,27 +81,42 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\Items\BagItem.cs" />
+    <Compile Include="Api\Enums\RecipeCollectionType.cs" />
+    <Compile Include="Api\Helpers\RecipeManagerHelper.cs" />
+    <Compile Include="Api\Helpers\ItemDatabaseHelper.cs" />
     <Compile Include="Api\BaseTranspilerPatch.cs" />
     <Compile Include="Api\Guard.cs" />
     <Compile Include="Api\Interfaces\IConsumable.cs" />
-    <Compile Include="Api\Interfaces\IEquippable.cs" />
+    <Compile Include="Api\Interfaces\IRevertable.cs" />
+    <Compile Include="Api\Items\CraftableItem.cs" />
+    <Compile Include="Api\Items\Item.cs" />
+    <Compile Include="Api\Items\TemporaryPotion.cs" />
     <Compile Include="Api\Items\Potion.cs" />
     <Compile Include="Api\JsonSerializer.cs" />
+    <Compile Include="Api\Helpers\LocalizationHelper.cs" />
     <Compile Include="Api\SpriteRegister.cs" />
     <Compile Include="Api\Web\ModUpdateChecker.cs" />
     <Compile Include="Api\Web\RestHelper.cs" />
     <Compile Include="Api\Web\WebReader.cs" />
-    <Compile Include="Extensions\AntiCheatExtensions\ObscuredFloatExt.cs" />
-    <Compile Include="Extensions\HeroMerchantExensions\HeroMerchantStatsExt.cs" />
+    <Compile Include="Extensions\ClassExt.cs" />
+    <Compile Include="Extensions\HeroMerchantExensions\HeroMerchantInventoryExt.cs" />
     <Compile Include="Extensions\HUDManagerExt.cs" />
     <Compile Include="Extensions\ItemExtensions\ConsumableExt.cs" />
+    <Compile Include="Extensions\ItemExtensions\EquipmentItemMasterExt.cs" />
     <Compile Include="Extensions\ItemExtensions\ItemMasterExt.cs" />
+    <Compile Include="Extensions\ItemExtensions\ItemStackExt.cs" />
+    <Compile Include="Extensions\ItemExtensions\RecipeExt.cs" />
+    <Compile Include="Extensions\ItemExtensions\RecipeIngredientExt.cs" />
+    <Compile Include="Extensions\RecipeManagerExt.cs" />
     <Compile Include="Extensions\UnityExtensions\ComponentExt.cs" />
     <Compile Include="Extensions\UnityExtensions\GameObjectExt.cs" />
+    <Compile Include="Extensions\UnityExtensions\SpriteExt.cs" />
     <Compile Include="Extensions\UnityExtensions\ImageExt.cs" />
+    <Compile Include="Extensions\UnityExtensions\MonoBehaviorExt.cs" />
     <Compile Include="Extensions\UnityExtensions\Texture2DExt.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Patches\Bugfix Patches\InventoryPanel_OnXButtonPressed.cs" />
+    <Compile Include="Patches\ItemDatabase_GetItemByName.cs" />
     <Compile Include="Patches\ItemDatabase_GetSpriteByItemName.cs" />
     <Compile Include="Patches\ItemDatabase_GetSprite.cs" />
     <Compile Include="Patches\MainMenuPanel_Awake.cs" />

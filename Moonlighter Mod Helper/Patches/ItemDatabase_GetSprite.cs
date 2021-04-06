@@ -7,12 +7,18 @@ namespace Moonlighter_Mod_Helper.Patches
     [HarmonyPatch(typeof(ItemDatabase), nameof(ItemDatabase.GetSprite))]
     internal class ItemDatabase_GetSprite
     {
-        [HarmonyPostfix]
-        internal static void Postfix(ItemMaster master, ref Sprite __result)
+        [HarmonyPrefix]
+        internal static bool Prefix(ItemMaster master, out Sprite __state)
         {
-            var sprite = SpriteRegister.GetFromRegister(master.worldSpriteName);
-            if (sprite)
-                __result = sprite;
+            __state = SpriteRegister.GetFromRegister(master.worldSpriteName, ignoreWarnings:true);
+            return __state ? false : true;
+        }
+
+        [HarmonyPostfix]
+        internal static void Postfix(ItemMaster master, Sprite __state, ref Sprite __result)
+        {
+            if (__state)
+                __result = __state;
         }
     }
 }

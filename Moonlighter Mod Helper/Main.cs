@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using Moonlighter_Mod_Helper.Api;
 using Moonlighter_Mod_Helper.Api.Web;
 using System;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Net.Security;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using UnityEngine;
 
 namespace Moonlighter_Mod_Helper
 {
@@ -18,7 +20,7 @@ namespace Moonlighter_Mod_Helper
         internal static Main instance;
         internal static Assembly modAssembly = Assembly.GetExecutingAssembly();
         internal static string modName = $"{modAssembly.GetName().Name}";
-        internal static string modDir = $"{Environment.CurrentDirectory}\\BepInEx\\{modName}";
+        internal static string modDir = $"{Environment.CurrentDirectory}\\BepInEx\\plugins\\{modName}";
 
         void Awake()
         {
@@ -29,7 +31,10 @@ namespace Moonlighter_Mod_Helper
 
         void Update()
         {
-            
+            /*if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                LocalizationHelper.Test();
+            }*/
         }
 
         internal static void LogMessage(string message)

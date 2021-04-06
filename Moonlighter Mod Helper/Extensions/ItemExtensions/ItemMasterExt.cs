@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Moonlighter_Mod_Helper.Api;
 using UnityEngine;
+using static EquipmentItemMaster;
 
 namespace Moonlighter_Mod_Helper.Extensions
 {
     public static class ItemMasterExt
     {
-        public static ItemMaster Clone(this ItemMaster from, string newName, string newNameKey)
-        {
-            return ItemDatabase.CloneItem(newName, newNameKey, from);
-        }
-
         public static GameObject GetPrefab(this ItemMaster itemMaster)
         {
             return ItemDatabase.GetPrefab(itemMaster.name);
@@ -53,20 +46,48 @@ namespace Moonlighter_Mod_Helper.Extensions
             return new ItemDrop().SpawnItem(itemMaster.GetPrefab().name, position, radius, parent);
         }
 
-        /*public static void SetSprite(this ItemMaster itemMaster, Sprite newSprite)
+        public static void SetItemName(this ItemMaster itemMaster, string newIdentifier, string name)
         {
-            itemMaster.SetSprite(newSprite, 0);
+            LocalizationHelper.AddTermData(newIdentifier, name);
+            itemMaster.name = name;
+            itemMaster.nameKey = newIdentifier;
         }
 
-        public static void SetSprite(this ItemMaster itemMaster, Sprite newSprite, int plusLevel)
+        public static void SetItemDescription(this ItemMaster itemMaster, string newIdentifier, string description)
         {
-            foreach (ItemMaster item in ItemDatabase.Instance.itemCollections[plusLevel].items)
-            {
-                if (item.name != itemMaster.worldSpriteName)
-                    continue;
+            LocalizationHelper.AddTermData(newIdentifier, description);
+            itemMaster.description = description;
+            itemMaster.descriptionKey = newIdentifier;
+        }
 
+        public static T ConvertTo<T> (this ItemMaster itemMaster) where T : ItemMaster, new()
+        {
+            T newItem = new T();
+            itemMaster.ConvertTo(ref newItem);
+            return newItem;
+        }
 
-            }
-        }*/
+        public static T ConvertTo<T>(this ItemMaster itemMaster, ref T newItem) where T : ItemMaster
+        {
+            newItem.canAppearInChest = itemMaster.canAppearInChest;
+            newItem.chestWeight = itemMaster.chestWeight;
+            newItem.culture = itemMaster.culture;
+            newItem.description = itemMaster.description;
+            newItem.descriptionKey = itemMaster.descriptionKey;
+            newItem.fixedChestStack = itemMaster.fixedChestStack;
+            newItem.goldValue = itemMaster.goldValue;
+            newItem.isDestroyedOnRunEnded = itemMaster.isDestroyedOnRunEnded;
+            newItem.maxChestStack = itemMaster.maxChestStack;
+            newItem.maxStack = itemMaster.maxStack;
+            newItem.minChestStack = itemMaster.minChestStack;
+            newItem.name = itemMaster.name;
+            newItem.nameKey = itemMaster.nameKey;
+            newItem.plusLevel = itemMaster.plusLevel;
+            newItem.tier = itemMaster.tier;
+            newItem.wandererWeaponGoldCost = itemMaster.wandererWeaponGoldCost;
+            newItem.wandererWeaponSlimeCost = itemMaster.wandererWeaponSlimeCost;
+            newItem.worldSpriteName = itemMaster.worldSpriteName;
+            return newItem;
+        }
     }
 }
