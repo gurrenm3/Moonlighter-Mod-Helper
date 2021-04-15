@@ -1,10 +1,16 @@
 ﻿using Moonlighter.Weapons;
 using System;
+using static HeroMerchantInventory;
 
 namespace Moonlighter_Mod_Helper.Extensions
 {
     public static class ItemStackExt
     {
+        public static bool Equip(this ItemStack itemStack, EquipmentSlot slot)
+        {
+            return HeroMerchant.Instance.heroMerchantInventory.SetEquippedItemByType(itemStack, slot);
+        }
+
         public static bool TryAddToInventory(this ItemStack itemStack)
         {
             var inventory = HeroMerchant.Instance?.heroMerchantInventory;

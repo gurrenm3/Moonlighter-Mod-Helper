@@ -9,13 +9,19 @@ namespace Moonlighter_Mod_Helper.Api
         public static void AddToDatabase(ItemMaster itemToAdd)
         {
 			var cultureInfo = CultureManager.Instance.GetCultureInfo(itemToAdd.culture);
+			if (cultureInfo is null)
+            {
+				Main.LogError($"Error! Failed to add item to ItemDatabase because CultureInfo for \"{itemToAdd.culture}\" is null");
+				return;
+            }
+
 			if (cultureInfo._discoveries.FirstOrDefault(discover => discover.master == itemToAdd) != null)
             {
-				Main.Log(BepInEx.Logging.LogLevel.Warning, $"Warning! Tried adding one or more duplicates of the " +
+				Main.LogWarning($"Warning! Tried adding one or more duplicates of the " +
 					$"item \"{itemToAdd.name}\" to the Item Database. Duplicate items won't be added.");
 				return;
 			}
-			
+
 			cultureInfo.AddItem(itemToAdd);
 			ItemDatabase.Instance.itemCollections[0].items.Add(itemToAdd);
 			//ItemDatabase.Instance.itemCollections[0].createdItems.Add(itemToAdd); //removed because it was preventing custom items from showing in the Notebook

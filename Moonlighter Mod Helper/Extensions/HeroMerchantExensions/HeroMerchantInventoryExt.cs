@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using static HeroMerchantInventory;
 
 namespace Moonlighter_Mod_Helper.Extensions
 {
@@ -13,6 +11,11 @@ namespace Moonlighter_Mod_Helper.Extensions
             {
                 heroMerchantInventory.RefreshSlotAt(i);
             }
+        }
+
+        public static void EquipItem(this HeroMerchantInventory __this, ItemStack weapon, EquipmentSlot slot)
+        {
+            __this.SetEquippedItemByType(weapon, slot);
         }
     }
 }

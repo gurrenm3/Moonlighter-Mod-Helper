@@ -19,6 +19,9 @@ namespace Moonlighter_Mod_Helper.Patches
 		[HarmonyPostfix]
 		internal static void Postfix(InventoryPanel __instance, ref bool __result)
 		{
+            System.Console.WriteLine("===========================================");
+            System.Console.WriteLine("Fix null refrence exception when consuming last potion");
+            System.Console.WriteLine("===========================================");
 			__result = true;
 			if (!__instance.IsActive() || !__instance.receiveInput || __instance.blockInput)
 			{
@@ -41,7 +44,6 @@ namespace Moonlighter_Mod_Helper.Patches
 				component.PlayWrongAnimation();
 				return;
 			}
-
 
 
 			component.PlaySelectedAnimation(Constants.GetFloat("inventorySlotPressPunchValue"));
@@ -87,9 +89,13 @@ namespace Moonlighter_Mod_Helper.Patches
 			}
 
 
+			// Check ItemRegistry to see if this is a custom item
+			ConsumableItemMaster consumableItemMaster = ItemRegister.GetItem<ConsumableItemMaster>(component.item.name);
+			if (consumableItemMaster is null)
+				consumableItemMaster = component.item as ConsumableItemMaster;
 
-			ConsumableItemMaster consumableItemMaster = component.item as ConsumableItemMaster;
-			bool isGuidenceEffect = (consumableItemMaster is null) ? false : consumableItemMaster.consumableEffectName.Contains("Guidance");
+
+			bool isGuidenceEffect = (consumableItemMaster?.consumableEffectName is null) ? false : consumableItemMaster.consumableEffectName.Contains("Guidance");
 			if (isGuidenceEffect)
 			{
 				DOVirtual.DelayedCall(0.1f, delegate

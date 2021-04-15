@@ -8,12 +8,14 @@ namespace Moonlighter_Mod_Helper.Api.Items
 {
     public abstract class CraftableItem : Item
     {
+        internal static event EventHandler LoadCustomRecipes;
+
         public List<Recipe> Recipes
         {
             get { return recipes; }
             set { recipes = value; }
         }
-        private static List<Recipe> recipes;
+        private List<Recipe> recipes = new List<Recipe>();
 
         public abstract RecipeCollectionType RecipeCollectionType { get; set; }
         public abstract string CollectionName { get; set; }
@@ -23,22 +25,18 @@ namespace Moonlighter_Mod_Helper.Api.Items
 
         public CraftableItem()
         {
-            if (ShouldAddRecipesToDatabase())
-            {
-                CreateRecipes();
-                AddRecipesToDatabase();
-            }
+            LoadCustomRecipes += CraftableItem_LoadCustomRecipes;
         }
 
         public virtual void AddRecipesToDatabase()
         {
             if (!AreRecipesCreated())
             {
-                Main.Log(BepInEx.Logging.LogLevel.Warning, $"Warning! Can't add recipe for \"{Name}\" because no recipes were created");
+                Main.LogWarning($"Warning! Can't add recipe for \"{Name}\" because no recipes were created");
                 return;
             }
 
-            foreach (var recipe in recipes)
+            foreach (var recipe in Recipes)
             {
                 recipe.AddToRecipeDatabase(RecipeCollectionType, CollectionName);
             }
@@ -51,7 +49,18 @@ namespace Moonlighter_Mod_Helper.Api.Items
 
         private bool AreRecipesCreated()
         {
-            return recipes is null || recipes.Count == 0;
+            return Recipes != null && Recipes.Count > 0;
+        }
+
+        internal static void InitCustomRecipes()
+        {
+            LoadCustomRecipes?.Invoke(null, EventArgs.Empty);
+        }
+
+        private void CraftableItem_LoadCustomRecipes(object sender, EventArgs e)
+        {
+            CreateRecipes();
+            AddRecipesToDatabase();
         }
     }
 }

@@ -37,6 +37,16 @@ namespace Moonlighter_Mod_Helper
             }*/
         }
 
+        internal static void Log(string message, LogLevel level)
+        {
+            instance.Logger.Log(level, message);
+        }
+
+        internal static void LogWarning(string message)
+        {
+            instance.Logger.LogWarning(message);
+        }
+
         internal static void LogMessage(string message)
         {
             instance.Logger.LogMessage(message);
@@ -45,11 +55,6 @@ namespace Moonlighter_Mod_Helper
         internal static void LogError(string message)
         {
             instance.Logger.LogError(message);
-        }
-
-        internal static void Log(LogLevel level, string message)
-        {
-            instance.Logger.Log(level, message);
         }
     }
 }

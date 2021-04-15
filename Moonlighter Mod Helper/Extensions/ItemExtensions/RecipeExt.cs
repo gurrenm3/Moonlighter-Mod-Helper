@@ -81,7 +81,6 @@ namespace Moonlighter_Mod_Helper.Extensions
                 database._recipeByItemName[recipe.craftedItemName].Add(recipe);
             else
                 database._recipeByItemName.Add(recipe.craftedItemName, new List<Recipe>() { recipe });
-
         }
 
         private static void AddToRecipeDatabase(this Recipe recipe, List<RecipeCollection> recipeCollections, string collectionName)

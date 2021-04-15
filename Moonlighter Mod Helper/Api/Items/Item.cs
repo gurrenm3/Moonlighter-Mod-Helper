@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using Moonlighter_Mod_Helper.Extensions;
+using System;
 
 namespace Moonlighter_Mod_Helper.Api.Items
 {
     public abstract class Item : MonoBehaviour
     {
-        private static ItemMaster itemMaster;
+        public static event EventHandler LoadItemIntoGame;
+        internal static event EventHandler InternalLoadItemIntoGame;
+
+        public ItemMaster itemMaster;
 
         public abstract string Name { get; set; }
         public abstract string NameKey { get; set; }
@@ -17,10 +21,17 @@ namespace Moonlighter_Mod_Helper.Api.Items
 
         public Item()
         {
-            SetSprite();
+            
         }
 
-        public virtual void SetSprite()
+        /*internal void OnRegisterItemType()
+        {
+            Console.WriteLine("========================= Registering Item Master");
+            itemMaster = GetItemMaster();
+            ItemRegister.AddItemMaster(itemMaster);
+        }*/
+
+        public virtual void RegisterSprite()
         {
             if (string.IsNullOrEmpty(SpriteKey) || string.IsNullOrEmpty(SpriteFilePath))
                 return;
@@ -28,13 +39,55 @@ namespace Moonlighter_Mod_Helper.Api.Items
             if (!SpriteRegister.IsInRegister(SpriteKey))
             {
                 var sprite = new Texture2D(32, 32).LoadFromFile(SpriteFilePath).CreateSpriteFromTexture(1);
-                
                 SpriteRegister.AddToRegister(SpriteKey, sprite);
             }
         }
 
+        public ItemMaster GetItemMaster()
+        {
+            if (itemMaster != null)
+                return itemMaster;
 
-        public static ItemMaster GetItemMaster<T>() where T : Item, new()
+            if (ItemRegister.TryGetItem<ItemMaster>(Name, out var result))
+            {
+                itemMaster = result;
+                return itemMaster;
+            }
+
+            itemMaster = ItemDatabase.GetItemByName("HP Potion I").Duplicate();
+            itemMaster.SetItemName(NameKey, Name);
+            itemMaster.SetItemDescription(DescriptionKey, Description);
+            itemMaster.worldSpriteName = SpriteKey;
+
+            ItemRegister.AddItemMaster(itemMaster);
+
+            return itemMaster;
+        }
+
+        /*public ItemStack CreateItemStack()
+        {
+            return CreateItemStack(GetItemMaster());
+        }*/
+
+        public ItemStack CreateItemStack<T>(ItemMaster itemMaster) where T : Item
+        {
+            return CreateItemStack<T, ItemMaster>(itemMaster);
+        }
+
+        public ItemStack CreateItemStack<T>(EquipmentItemMaster equipmentItemMaster) where T : Item
+        {
+            return CreateItemStack<T, EquipmentItemMaster>(equipmentItemMaster);
+        }
+
+        protected ItemStack CreateItemStack<Type, Master>(Master itemMaster) where Type : Item where Master : ItemMaster, new()
+        {
+            var itemStack = ItemStack.Create(itemMaster);
+            itemStack.gameObject.GetOrAddComponent<Type>();
+            return itemStack;
+        }
+
+
+        /*public static ItemMaster GetItemMaster<T>() where T : Item, new()
         {
             if (itemMaster != null)
                 return itemMaster;
@@ -69,6 +122,16 @@ namespace Moonlighter_Mod_Helper.Api.Items
             var itemStack = ItemStack.Create(itemMaster);
             itemStack.gameObject.GetOrAddComponent<Type>();
             return itemStack;
+        }*/
+
+        internal static void InitCustomItems()
+        {
+            LoadItemIntoGame?.Invoke(null, EventArgs.Empty);
+        }
+
+        internal static void InitInternalCustomItems()
+        {
+            InternalLoadItemIntoGame?.Invoke(null, EventArgs.Empty);
         }
     }
 }

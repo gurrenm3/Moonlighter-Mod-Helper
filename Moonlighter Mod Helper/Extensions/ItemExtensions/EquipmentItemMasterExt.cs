@@ -13,7 +13,7 @@ namespace Moonlighter_Mod_Helper.Extensions
 
         public static T Init<T>(this T equipmentItemMaster, ItemMaster parent) where T : EquipmentItemMaster
         {
-            parent.ConvertTo(ref equipmentItemMaster);
+            parent.DuplicateAs(ref equipmentItemMaster);
             equipmentItemMaster.stats = equipmentItemMaster.stats is null ? new StatsModificator() : equipmentItemMaster.stats;
             return equipmentItemMaster;
         }

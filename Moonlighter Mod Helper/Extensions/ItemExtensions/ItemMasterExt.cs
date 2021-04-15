@@ -60,14 +60,14 @@ namespace Moonlighter_Mod_Helper.Extensions
             itemMaster.descriptionKey = newIdentifier;
         }
 
-        public static T ConvertTo<T> (this ItemMaster itemMaster) where T : ItemMaster, new()
+        public static T DuplicateAs<T> (this ItemMaster itemMaster) where T : ItemMaster, new()
         {
             T newItem = new T();
-            itemMaster.ConvertTo(ref newItem);
+            itemMaster.DuplicateAs(ref newItem);
             return newItem;
         }
 
-        public static T ConvertTo<T>(this ItemMaster itemMaster, ref T newItem) where T : ItemMaster
+        public static T DuplicateAs<T>(this ItemMaster itemMaster, ref T newItem) where T : ItemMaster
         {
             newItem.canAppearInChest = itemMaster.canAppearInChest;
             newItem.chestWeight = itemMaster.chestWeight;

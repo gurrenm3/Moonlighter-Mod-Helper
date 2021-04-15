@@ -31,7 +31,7 @@ namespace Moonlighter_Mod_Helper.Api
         {
             var hasKey = spriteRegister.TryGetValue(itemName, out Sprite sprite);
             if (!hasKey && !ignoreWarnings)
-                Main.Log(BepInEx.Logging.LogLevel.Warning, $"SpriteRegister failed to find sprite by the name of {itemName}");
+                Main.LogWarning($"SpriteRegister failed to find sprite by the name of {itemName}");
             
             return sprite;
         }

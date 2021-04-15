@@ -1,4 +1,5 @@
 ﻿using Moonlighter_Mod_Helper.Extensions;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Moonlighter_Mod_Helper.Api.Items
 {
     public abstract class Potion : CraftableItem, IConsumable
     {
-        private static EquipmentItemMaster equipmentItemMaster;
+        public ConsumableItemMaster consumableItemMaster;
 
         public override RecipeCollectionType RecipeCollectionType { get; set; } = RecipeCollectionType.Witch;
         public override string CollectionName { get; set; } = "potions";
@@ -18,7 +19,6 @@ namespace Moonlighter_Mod_Helper.Api.Items
         {
             
         }
-
 
         public float GetBonusFromNGP()
         {
@@ -40,34 +40,42 @@ namespace Moonlighter_Mod_Helper.Api.Items
             HeroMerchant.Instance.DestroyEffects();
         }
 
-
-        public static EquipmentItemMaster GetEquipmentItemMaster<T>() where T : Potion, new()
+        public new ConsumableItemMaster GetItemMaster()
         {
-            if (equipmentItemMaster != null)
-                return equipmentItemMaster;
+            if (consumableItemMaster != null)
+                return consumableItemMaster;
 
-            equipmentItemMaster = new EquipmentItemMaster();
-            equipmentItemMaster = GetItemMaster<T>().ConvertTo<EquipmentItemMaster>();
-            equipmentItemMaster.stats = new StatsModificator();
-            equipmentItemMaster.equipmentSlot = EquipmentItemMaster.EquipmentSlot.Potion;
-            ItemDatabaseHelper.AddToDatabase(equipmentItemMaster);
+            if (ItemRegister.TryGetItem<ConsumableItemMaster>(Name, out var result))
+            {
+                consumableItemMaster = result;
+                return consumableItemMaster;
+            }
 
-            return equipmentItemMaster;
+            consumableItemMaster = new ConsumableItemMaster();
+            consumableItemMaster = ItemDatabase.GetItemByName("HP Potion I").DuplicateAs<ConsumableItemMaster>();
+            consumableItemMaster.SetItemName(NameKey, Name);
+            consumableItemMaster.SetItemDescription(DescriptionKey, Description);
+            consumableItemMaster.worldSpriteName = SpriteKey;
+
+            consumableItemMaster.stats = new StatsModificator();
+            consumableItemMaster.equipmentSlot = EquipmentItemMaster.EquipmentSlot.Potion;
+
+
+            ItemRegister.AddItemMaster(consumableItemMaster);
+
+            return consumableItemMaster;
         }
 
-        public static new ItemStack CreateItemStack<T>() where T : Potion, new()
+
+
+        public ItemStack CreateItemStack<T>() where T : Potion, new()
         {
-            return CreateItemStack<T>(GetEquipmentItemMaster<T>());
+            return CreateItemStack<T>(consumableItemMaster);
         }
 
-        public static new ItemStack CreateItemStack<T>(EquipmentItemMaster itemMaster) where T : Potion, new()
+        public ItemStack CreateItemStack<T>(EquipmentItemMaster itemMaster) where T : Potion, new()
         {
-            var itemStack = Item.CreateItemStack<T>(itemMaster);
-
-            var consumableItemMaster = new ConsumableItemMaster();
-            consumableItemMaster = itemStack.master.ConvertTo<ConsumableItemMaster>();
-            itemStack.AddConsumable(consumableItemMaster);
-
+            var itemStack = CreateItemStack<T, EquipmentItemMaster>(itemMaster);
             return itemStack;
         }
     }
